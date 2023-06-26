@@ -4,10 +4,16 @@ const usePasswordGenerator = () => {
     const [password, setPassword] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
 
-    const generatePassword = () => {
+    const generatePassword = (checkboxData, length) => {
         let charset = "", generatedPassword = "";
 
-        const selectedOption = checkboxData.filter((checked) => checkbox.state);
+        const selectedOption = checkboxData.filter((checkbox) => checkbox.state);
+
+        if (selectedOption.length === 0) {
+            setErrorMessage("Select atleast one option.");
+            setPassword("");
+            return;
+        }
 
         selectedOption.forEach((option) => {
             switch (option.title) {
@@ -28,9 +34,11 @@ const usePasswordGenerator = () => {
             }
         });
         for (let i = 0; i < length; i++) {
-            ;
-
+            const randomIndex = Math.floor(Math.random() * charset.length);
+            generatedPassword += charset[randomIndex];
         }
+        setPassword(generatedPassword);
+        setErrorMessage("");
     };
     return { password, errorMessage, generatePassword };
 };
